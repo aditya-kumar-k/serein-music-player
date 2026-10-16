@@ -87,7 +87,7 @@ function romanize(text) {
   for (const { name, re } of SCRIPTS) {
     out = out.replace(re, run => {
       if (name === 'tamil') return tamilWord(run);
-      let src = run.replace(/[‌‍]/g, '');
+      let src = run.replace(/[‌‍]/g, '').replace(/[\u093C\u09BC\u0A3C\u0ABC]/g, '');   // drop nukta dots: फ़ → फ
       if (name === 'malayalam') {
         src = src.replace(/്$/, 'ു')   // word-final half-u: കണ്ണോട് → kannodu
           .replace(/ൺ/g, 'ണ്').replace(/ൻ/g, 'ന്').replace(/ർ/g, 'ര്')

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Serien Music Player
+Comment=Local music player with auto-synced lyrics
+Exec="@APP_DIR@/launch.sh"
+Path=@APP_DIR@
+Icon=@APP_DIR@/icon.png
+Terminal=false
+Categories=AudioVideo;Audio;Player;
+StartupWMClass=Serien Music Player
