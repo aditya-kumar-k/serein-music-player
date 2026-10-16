@@ -2,9 +2,9 @@
 Type=Application
 Name=Serien Music Player
 Comment=Serien Music Player
-Exec=/mnt/New_Volume/Software/Linux/music-player/launch.sh
-Path=/mnt/New_Volume/Software/Linux/music-player
-Icon=/mnt/New_Volume/Software/Linux/music-player/icon.png
+Exec="/mnt/New_Volume/Software/Linux/Serien Music Player/launch.sh"
+Path=/mnt/New_Volume/Software/Linux/Serien Music Player
+Icon=/mnt/New_Volume/Software/Linux/Serien Music Player/icon.png
 Terminal=false
 Categories=AudioVideo;Audio;Player;
 StartupWMClass=Serien Music Player
