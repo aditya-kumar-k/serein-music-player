@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# User local library & state files
+folders.json
+favorites.json
+playlists.json
+history.json
+lyrics.json
+*-backup-*.json
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# Build & packaging output
+dist/
+out/
+build/
