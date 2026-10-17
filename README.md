@@ -51,11 +51,12 @@ When you start a song that has no saved lyrics, Serien looks them up in the back
 | :--- | :--- |
 | **Formats** | MP3, FLAC, WAV, M4A, OGG, AAC, played through [Howler.js](https://howlerjs.com) |
 | **Album art & tags** | Reads embedded cover art, artist and album, or `cover.jpg` / `folder.jpg` next to the files. The cover's colors become the glow behind the player |
-| **Library** | Add any folders, including other drives. Browse by folder, filter by language chip, search instantly |
+| **Library** | Add any folders, including other drives. Browse by folder, search instantly, and filter by language with a collapsible chip list (click the `›` next to **All**) |
 | **Indic search** | Type `kesariya` and find `केसरिया`. Search 8 Indian scripts using plain English keystrokes, powered by [`@indic-transliteration/sanscript`](https://github.com/indic-transliteration/sanscript.js) |
 | **Favorites & playlists** | Star songs, group favorites into categories, create and rename playlists |
 | **Queue, history, most played** | A persistent play queue, recently played list and play counts |
 | **A–B loop** | Mark a start and end point and loop a passage, handy for learning a song |
+| **Tidy controls** | Sleep timer, equalizer, visualizer and fade tuck away behind a `⌄` button and slide out as a second row when you need them. Open or closed is remembered |
 | **Sleep timer** | 5 to 90 minutes |
 | **Fade in/out** | Smooth fades on play, pause and sleep timer |
 | **Shuffle & repeat** | Shuffle and repeat-all |
@@ -79,7 +80,7 @@ Real-time spectrum visualization in three styles: **Bars**, **Wave** and **Ring*
 
 ### 🌗 Light & dark mode
 
-Switch themes with the sun/moon button or **T**. Your choice is remembered, and works together with the accent color picker.
+Switch themes with the sun/moon button or **T**. Your choice is remembered, and works together with the accent color picker. The screenshot also shows the language list and the extra controls row expanded.
 
 ![Light mode](docs/screenshots/light-mode.png)
 
