@@ -99,10 +99,17 @@
       </div>
       <button class="btn-loop" id="shuffleBtn" onclick="toggleShuffle()" title="Shuffle (Ctrl+S)">Shuffle</button>
       <button class="btn-loop active" id="repeatBtn" onclick="toggleRepeat()">Repeat all</button>
-      <button class="btn-loop" id="sleepTimerBtn" onclick="showSleepTimer()" title="Sleep timer">Sleep</button>
-      <button class="btn-loop" id="eqBtn" onclick="showEqPanel(this)" title="Equalizer">EQ</button>
-      <button class="btn-loop active" id="vizBtn" onclick="cycleViz()" title="Visualizer: off / bars / wave / ring (V)">Viz · Bars</button>
-      <button class="btn-loop active" id="fadeBtn" onclick="toggleFade()" title="Fade in/out on play, pause and sleep timer">Fade</button>
+      <button class="btn-loop btn-more" id="moreBtn" onclick="toggleMoreControls()" title="More controls: sleep timer, equalizer, visualizer, fade" aria-label="Toggle more controls" aria-expanded="false">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div class="more-controls" id="moreControls">
+        <div class="more-controls-inner">
+          <button class="btn-loop" id="sleepTimerBtn" onclick="showSleepTimer()" title="Sleep timer">Sleep</button>
+          <button class="btn-loop" id="eqBtn" onclick="showEqPanel(this)" title="Equalizer">EQ</button>
+          <button class="btn-loop active" id="vizBtn" onclick="cycleViz()" title="Visualizer: off / bars / wave / ring (V)">Viz · Bars</button>
+          <button class="btn-loop active" id="fadeBtn" onclick="toggleFade()" title="Fade in/out on play, pause and sleep timer">Fade</button>
+        </div>
+      </div>
     </div>
 
     <!-- Volume -->

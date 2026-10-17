@@ -535,6 +535,9 @@ function saveLangFilter() {
   try { localStorage.setItem("langFilter", JSON.stringify([...langFilter])); } catch {}
 }
 
+let langExpanded = false;
+try { langExpanded = localStorage.getItem("langExpanded") === "1"; } catch {}
+
 function renderLangChips() {
   const wrap = document.getElementById("langChips");
   if (!wrap) return;
@@ -542,20 +545,53 @@ function renderLangChips() {
   [...langFilter].forEach(l => { if (!langs.includes(l)) langFilter.delete(l); });   // folder was removed
   wrap.innerHTML = "";
   wrap.style.display = langs.length > 1 ? "" : "none";
+  wrap.classList.toggle("open", langExpanded);
 
-  const chip = (label, active, onClick) => {
+  const mkChip = (label, active, onClick) => {
     const b = document.createElement("button");
     b.className = "lang-chip" + (active ? " active" : "");
     b.textContent = label;
     b.onclick = onClick;
-    wrap.appendChild(b);
+    return b;
   };
-  chip("All", langFilter.size === 0, () => { langFilter.clear(); applyLanguageFilter(); });
-  langs.forEach(l => chip(l, langFilter.has(l), () => {
+
+  // Top row: "All" + a chevron that reveals the languages
+  const top = document.createElement("div");
+  top.className = "lang-top";
+  top.appendChild(mkChip("All", langFilter.size === 0, () => { langFilter.clear(); applyLanguageFilter(); }));
+  const tgl = document.createElement("button");
+  tgl.className = "lang-toggle" + (langFilter.size ? " has-filter" : "");
+  tgl.title = langExpanded ? "Hide languages" : "Show languages";
+  tgl.setAttribute("aria-expanded", langExpanded);
+  tgl.setAttribute("aria-label", "Toggle language list");
+  tgl.innerHTML = '<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>'
+    + (langFilter.size ? `<span class="lang-count">${langFilter.size}</span>` : "");
+  tgl.onclick = toggleLangList;
+  top.appendChild(tgl);
+  wrap.appendChild(top);
+
+  // Collapsible language list
+  const more = document.createElement("div");
+  more.className = "lang-more";
+  const inner = document.createElement("div");
+  inner.className = "lang-more-inner";
+  langs.forEach(l => inner.appendChild(mkChip(l, langFilter.has(l), () => {
     if (langFilter.has(l)) langFilter.delete(l); else langFilter.add(l);
     if (langFilter.size === langs.length) langFilter.clear();   // everything picked = All
     applyLanguageFilter();
-  }));
+  })));
+  more.appendChild(inner);
+  wrap.appendChild(more);
+}
+
+// Animate open/close in place (no re-render, so the CSS transition can run)
+function toggleLangList() {
+  langExpanded = !langExpanded;
+  try { localStorage.setItem("langExpanded", langExpanded ? "1" : "0"); } catch {}
+  const wrap = document.getElementById("langChips");
+  wrap.classList.toggle("open", langExpanded);
+  const t = wrap.querySelector(".lang-toggle");
+  if (t) { t.setAttribute("aria-expanded", langExpanded); t.title = langExpanded ? "Hide languages" : "Show languages"; }
 }
 
 function applyLanguageFilter() {

@@ -675,6 +675,26 @@ function toggleColorMode() {
 }
 window.toggleColorMode = toggleColorMode;
 
+// ── "More controls" row (sleep / EQ / viz / fade) ────────────
+function setMoreControls(open) {
+  document.getElementById("moreControls")?.classList.toggle("open", open);
+  const b = document.getElementById("moreBtn");
+  if (b) { b.classList.toggle("open", open); b.setAttribute("aria-expanded", open); }
+  try { localStorage.setItem("moreControls", open ? "1" : "0"); } catch {}
+}
+function toggleMoreControls() { setMoreControls(!document.getElementById("moreControls").classList.contains("open")); }
+window.toggleMoreControls = toggleMoreControls;
+window.addEventListener("DOMContentLoaded", () => {
+  try { if (localStorage.getItem("moreControls") === "1") setMoreControls(true); } catch {}
+  // Hint on the chevron while a sleep timer is running and the row is hidden
+  const sleepBtn = document.getElementById("sleepTimerBtn"), moreBtn = document.getElementById("moreBtn");
+  if (sleepBtn && moreBtn) {
+    const sync = () => moreBtn.classList.toggle("has-active", sleepBtn.classList.contains("active"));
+    new MutationObserver(sync).observe(sleepBtn, { attributes: true, attributeFilter: ["class"] });
+    sync();
+  }
+});
+
 function changeTheme(color) {
   document.documentElement.style.setProperty('--accent', color);
   try { localStorage.setItem("accent", color); } catch {}
