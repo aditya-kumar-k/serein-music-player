@@ -40,19 +40,19 @@ function showSleepTimer() {
   const overlay = document.createElement("div");
   overlay.id = "pl-prompt";
   overlay.style.cssText = `
-    position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+    position: fixed; inset: 0; background: var(--scrim);
     display: flex; align-items: center; justify-content: center; z-index: 2000;
   `;
 
   const box = document.createElement("div");
   box.style.cssText = `
-    background: #1a1a24; border: 1px solid #ffffff0f; border-radius: 12px;
+    background: var(--pop); border: 1px solid var(--hairline); border-radius: 12px;
     padding: 20px; width: 280px; display: flex; flex-direction: column; gap: 14px;
   `;
 
   const title = document.createElement("div");
   title.textContent = "⏱ Sleep Timer";
-  title.style.cssText = "font-size: 13px; font-weight: 600; color: #e8e8f0;";
+  title.style.cssText = "font-size: 13px; font-weight: 600; color: var(--text);";
 
   // Preset buttons
   const presets = [5, 10, 15, 20, 30, 45, 60, 90];
@@ -63,13 +63,13 @@ function showSleepTimer() {
     const btn = document.createElement("button");
     btn.textContent = mins < 60 ? `${mins}m` : `${mins / 60}h`;
     btn.style.cssText = `
-      flex: 1; min-width: 48px; background: var(--surface2, #1a1a24);
+      flex: 1; min-width: 48px; background: var(--surface2);
       color: var(--accent2); border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
       border-radius: 8px; padding: 7px 4px; font-family: inherit;
       font-size: 12px; cursor: pointer; transition: all 0.15s;
     `;
     btn.onmouseenter = () => btn.style.background = "color-mix(in srgb, var(--accent) 20%, transparent)";
-    btn.onmouseleave = () => btn.style.background = "var(--surface2, #1a1a24)";
+    btn.onmouseleave = () => btn.style.background = "var(--surface2)";
     btn.onclick = () => { overlay.remove(); startSleepTimer(mins * 60); };
     presetWrap.appendChild(btn);
   });
@@ -84,8 +84,8 @@ function showSleepTimer() {
   customInput.min         = "1";
   customInput.max         = "300";
   customInput.style.cssText = `
-    flex: 1; background: #0c0c10; border: 1px solid #ffffff0f; border-radius: 7px;
-    padding: 7px 10px; color: #e8e8f0; font-size: 12px; font-family: inherit; outline: none;
+    flex: 1; background: var(--field); border: 1px solid var(--hairline); border-radius: 7px;
+    padding: 7px 10px; color: var(--text); font-size: 12px; font-family: inherit; outline: none;
   `;
 
   const setBtn = document.createElement("button");
@@ -106,12 +106,12 @@ function showSleepTimer() {
 
   // Cancel button (only shown if timer is active)
   const btnRow = document.createElement("div");
-  btnRow.style.cssText = "display: flex; gap: 8px; justify-content: flex-end; border-top: 1px solid #ffffff0f; padding-top: 10px;";
+  btnRow.style.cssText = "display: flex; gap: 8px; justify-content: flex-end; border-top: 1px solid var(--hairline); padding-top: 10px;";
 
   const closeBtn = document.createElement("button");
   closeBtn.textContent = "Close";
   closeBtn.style.cssText = `
-    background: transparent; color: #6b6b80; border: 1px solid #ffffff0f;
+    background: transparent; color: var(--muted); border: 1px solid var(--hairline);
     border-radius: 7px; padding: 6px 14px; cursor: pointer; font-family: inherit; font-size: 12px;
   `;
   closeBtn.onclick = () => overlay.remove();
@@ -284,8 +284,8 @@ function renderTreeWithRoot(node, parent = null, appendMode = false, rootFolder 
         menu.id = "folder-ctx-menu";
         menu.style.cssText = `
           position: fixed; left: ${e.clientX}px; top: ${e.clientY}px;
-          background: #1a1a24; border: 1px solid #ffffff18; border-radius: 8px;
-          padding: 4px; z-index: 3000; box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+          background: var(--pop); border: 1px solid var(--hairline); border-radius: 8px;
+          padding: 4px; z-index: 3000; box-shadow: 0 8px 24px var(--shadow);
           min-width: 160px;
         `;
         const removeItem = document.createElement("div");
@@ -662,6 +662,19 @@ function updateVolIcon() {
 document.getElementById("volumeBar").style.setProperty('--vol', '80%');
 
 // ── THEME ────────────────────────────────────────────────────
+// ── LIGHT / DARK MODE ────────────────────────────────────────
+function applyColorMode(mode) {
+  document.documentElement.dataset.theme = mode;
+  const btn = document.getElementById("modeBtn");
+  if (btn) { btn.dataset.mode = mode; btn.title = mode === "light" ? "Switch to dark mode (T)" : "Switch to light mode (T)"; }
+}
+function toggleColorMode() {
+  const next = document.documentElement.dataset.theme === "light" ? "dark" : "light";
+  applyColorMode(next);
+  try { localStorage.setItem("theme", next); } catch {}
+}
+window.toggleColorMode = toggleColorMode;
+
 function changeTheme(color) {
   document.documentElement.style.setProperty('--accent', color);
   try { localStorage.setItem("accent", color); } catch {}
@@ -1417,28 +1430,28 @@ function createPlaylist(andAddSong = false) {
 
   const overlay = document.createElement("div");
   overlay.id = "pl-prompt";
-  overlay.style.cssText = `position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+  overlay.style.cssText = `position: fixed; inset: 0; background: var(--scrim);
     display: flex; align-items: center; justify-content: center; z-index: 2000;`;
 
   const box = document.createElement("div");
-  box.style.cssText = `background: #1a1a24; border: 1px solid #ffffff0f; border-radius: 12px;
+  box.style.cssText = `background: var(--pop); border: 1px solid var(--hairline); border-radius: 12px;
     padding: 20px; width: 280px; display: flex; flex-direction: column; gap: 12px;`;
 
   const label = document.createElement("div");
   label.textContent = "New Playlist";
-  label.style.cssText = "font-size: 13px; font-weight: 600; color: #e8e8f0;";
+  label.style.cssText = "font-size: 13px; font-weight: 600; color: var(--text);";
 
   const input = document.createElement("input");
   input.type = "text"; input.placeholder = "Playlist name…";
-  input.style.cssText = `background: #0c0c10; border: 1px solid #ffffff0f; border-radius: 7px;
-    padding: 8px 10px; color: #e8e8f0; font-size: 13px; font-family: inherit; outline: none; width: 100%;`;
+  input.style.cssText = `background: var(--field); border: 1px solid var(--hairline); border-radius: 7px;
+    padding: 8px 10px; color: var(--text); font-size: 13px; font-family: inherit; outline: none; width: 100%;`;
 
   const btnRow = document.createElement("div");
   btnRow.style.cssText = "display: flex; gap: 8px; justify-content: flex-end;";
 
   const cancelBtn = document.createElement("button");
   cancelBtn.textContent = "Cancel";
-  cancelBtn.style.cssText = `background: transparent; color: #6b6b80; border: 1px solid #ffffff0f;
+  cancelBtn.style.cssText = `background: transparent; color: var(--muted); border: 1px solid var(--hairline);
     border-radius: 7px; padding: 6px 14px; cursor: pointer; font-family: inherit;`;
   cancelBtn.onclick = () => overlay.remove();
 
@@ -1482,28 +1495,28 @@ function renamePlaylist(id) {
 
   const overlay = document.createElement("div");
   overlay.id = "pl-prompt";
-  overlay.style.cssText = `position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+  overlay.style.cssText = `position: fixed; inset: 0; background: var(--scrim);
     display: flex; align-items: center; justify-content: center; z-index: 2000;`;
 
   const box = document.createElement("div");
-  box.style.cssText = `background: #1a1a24; border: 1px solid #ffffff0f; border-radius: 12px;
+  box.style.cssText = `background: var(--pop); border: 1px solid var(--hairline); border-radius: 12px;
     padding: 20px; width: 280px; display: flex; flex-direction: column; gap: 12px;`;
 
   const label = document.createElement("div");
   label.textContent = "Rename Playlist";
-  label.style.cssText = "font-size: 13px; font-weight: 600; color: #e8e8f0;";
+  label.style.cssText = "font-size: 13px; font-weight: 600; color: var(--text);";
 
   const input = document.createElement("input");
   input.type = "text"; input.value = pl.name;
-  input.style.cssText = `background: #0c0c10; border: 1px solid #ffffff0f; border-radius: 7px;
-    padding: 8px 10px; color: #e8e8f0; font-size: 13px; font-family: inherit; outline: none; width: 100%;`;
+  input.style.cssText = `background: var(--field); border: 1px solid var(--hairline); border-radius: 7px;
+    padding: 8px 10px; color: var(--text); font-size: 13px; font-family: inherit; outline: none; width: 100%;`;
 
   const btnRow = document.createElement("div");
   btnRow.style.cssText = "display: flex; gap: 8px; justify-content: flex-end;";
 
   const cancelBtn = document.createElement("button");
   cancelBtn.textContent = "Cancel";
-  cancelBtn.style.cssText = `background: transparent; color: #6b6b80; border: 1px solid #ffffff0f;
+  cancelBtn.style.cssText = `background: transparent; color: var(--muted); border: 1px solid var(--hairline);
     border-radius: 7px; padding: 6px 14px; cursor: pointer; font-family: inherit;`;
   cancelBtn.onclick = () => overlay.remove();
 
@@ -1544,27 +1557,27 @@ function deletePlaylist(id) {
 
   const overlay = document.createElement("div");
   overlay.id = "pl-prompt";
-  overlay.style.cssText = `position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+  overlay.style.cssText = `position: fixed; inset: 0; background: var(--scrim);
     display: flex; align-items: center; justify-content: center; z-index: 2000;`;
 
   const box = document.createElement("div");
-  box.style.cssText = `background: #1a1a24; border: 1px solid #ffffff0f; border-radius: 12px;
+  box.style.cssText = `background: var(--pop); border: 1px solid var(--hairline); border-radius: 12px;
     padding: 20px; width: 280px; display: flex; flex-direction: column; gap: 12px;`;
 
   const label = document.createElement("div");
   label.textContent = "Delete Playlist";
-  label.style.cssText = "font-size: 13px; font-weight: 600; color: #e8e8f0;";
+  label.style.cssText = "font-size: 13px; font-weight: 600; color: var(--text);";
 
   const msg = document.createElement("div");
   msg.textContent = `Delete "${pl.name}"? This cannot be undone.`;
-  msg.style.cssText = "font-size: 12px; color: #6b6b80; line-height: 1.5;";
+  msg.style.cssText = "font-size: 12px; color: var(--muted); line-height: 1.5;";
 
   const btnRow = document.createElement("div");
   btnRow.style.cssText = "display: flex; gap: 8px; justify-content: flex-end;";
 
   const cancelBtn = document.createElement("button");
   cancelBtn.textContent = "Cancel";
-  cancelBtn.style.cssText = `background: transparent; color: #6b6b80; border: 1px solid #ffffff0f;
+  cancelBtn.style.cssText = `background: transparent; color: var(--muted); border: 1px solid var(--hairline);
     border-radius: 7px; padding: 6px 14px; cursor: pointer; font-family: inherit;`;
   cancelBtn.onclick = () => overlay.remove();
 
@@ -1730,20 +1743,20 @@ async function showDrivePicker() {
 
   const overlay = document.createElement("div");
   overlay.id = "pl-prompt";
-  overlay.style.cssText = `position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+  overlay.style.cssText = `position: fixed; inset: 0; background: var(--scrim);
     display: flex; align-items: center; justify-content: center; z-index: 2000;`;
 
   const box = document.createElement("div");
-  box.style.cssText = `background: #1a1a24; border: 1px solid #ffffff0f; border-radius: 12px;
+  box.style.cssText = `background: var(--pop); border: 1px solid var(--hairline); border-radius: 12px;
     padding: 20px; width: 300px; display: flex; flex-direction: column; gap: 12px;`;
 
   const title = document.createElement("div");
   title.textContent = "Choose a drive to scan";
-  title.style.cssText = "font-size: 13px; font-weight: 600; color: #e8e8f0;";
+  title.style.cssText = "font-size: 13px; font-weight: 600; color: var(--text);";
 
   const sub = document.createElement("div");
   sub.textContent = "We'll find all folders containing audio files.";
-  sub.style.cssText = "font-size: 11.5px; color: #6b6b80; line-height: 1.5;";
+  sub.style.cssText = "font-size: 11.5px; color: var(--muted); line-height: 1.5;";
 
   const driveList = document.createElement("div");
   driveList.style.cssText = "display: flex; flex-direction: column; gap: 6px; max-height: 200px; overflow-y: auto;";
@@ -1751,18 +1764,18 @@ async function showDrivePicker() {
   drives.forEach(drive => {
     const btn = document.createElement("button");
     btn.textContent = drive;
-    btn.style.cssText = `background: #0c0c10; border: 1px solid #ffffff0f; border-radius: 8px;
-      padding: 9px 12px; color: #e8e8f0; font-size: 13px; font-family: inherit;
+    btn.style.cssText = `background: var(--field); border: 1px solid var(--hairline); border-radius: 8px;
+      padding: 9px 12px; color: var(--text); font-size: 13px; font-family: inherit;
       text-align: left; cursor: pointer; transition: border-color 0.15s;`;
     btn.onmouseenter = () => btn.style.borderColor = "var(--accent)";
-    btn.onmouseleave = () => btn.style.borderColor = "#ffffff0f";
+    btn.onmouseleave = () => btn.style.borderColor = "var(--hairline)";
     btn.onclick = () => { overlay.remove(); scanDrive(drive); };
     driveList.appendChild(btn);
   });
 
   const cancelBtn = document.createElement("button");
   cancelBtn.textContent = "Cancel";
-  cancelBtn.style.cssText = `background: transparent; color: #6b6b80; border: 1px solid #ffffff0f;
+  cancelBtn.style.cssText = `background: transparent; color: var(--muted); border: 1px solid var(--hairline);
     border-radius: 7px; padding: 6px 14px; cursor: pointer; font-family: inherit; align-self: flex-end;`;
   cancelBtn.onclick = () => overlay.remove();
 
@@ -1817,26 +1830,26 @@ function showFolderManager() {
 
   const overlay = document.createElement("div");
   overlay.id = "pl-prompt";
-  overlay.style.cssText = `position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+  overlay.style.cssText = `position: fixed; inset: 0; background: var(--scrim);
     display: flex; align-items: center; justify-content: center; z-index: 2000;`;
 
   const box = document.createElement("div");
-  box.style.cssText = `background: #1a1a24; border: 1px solid #ffffff0f; border-radius: 12px;
+  box.style.cssText = `background: var(--pop); border: 1px solid var(--hairline); border-radius: 12px;
     padding: 20px; width: 360px; max-height: 70vh; display: flex; flex-direction: column; gap: 12px;`;
 
   const header = document.createElement("div");
   header.style.cssText = "display: flex; align-items: center; justify-content: space-between;";
-  header.innerHTML = `<span style="font-size:13px; font-weight:600; color:#e8e8f0;">Music Folders</span>`;
+  header.innerHTML = `<span style="font-size:13px; font-weight:600; color:var(--text);">Music Folders</span>`;
 
   const closeBtn = document.createElement("button");
   closeBtn.textContent = "✕";
-  closeBtn.style.cssText = `background: transparent; color: #6b6b80; border: none; font-size: 14px; cursor: pointer; padding: 0 4px;`;
+  closeBtn.style.cssText = `background: transparent; color: var(--muted); border: none; font-size: 14px; cursor: pointer; padding: 0 4px;`;
   closeBtn.onclick = () => overlay.remove();
   header.appendChild(closeBtn);
 
   const sub = document.createElement("div");
   sub.textContent = "Remove folders you no longer want in your library.";
-  sub.style.cssText = "font-size: 11.5px; color: #6b6b80; line-height: 1.5;";
+  sub.style.cssText = "font-size: 11.5px; color: var(--muted); line-height: 1.5;";
 
   const listWrap = document.createElement("div");
   listWrap.style.cssText = "display: flex; flex-direction: column; gap: 6px; overflow-y: auto; max-height: 300px;";
@@ -1845,7 +1858,7 @@ function showFolderManager() {
     listWrap.innerHTML = "";
     const current = loadFolders() || [];
     if (current.length === 0) {
-      listWrap.innerHTML = `<div style="color:#6b6b80; font-size:12px; text-align:center; padding:16px 0;">No folders added.</div>`;
+      listWrap.innerHTML = `<div style="color:var(--muted); font-size:12px; text-align:center; padding:16px 0;">No folders added.</div>`;
       return;
     }
     current.forEach((folder) => {
@@ -1882,7 +1895,7 @@ function showFolderManager() {
   rebuildList();
 
   const actions = document.createElement("div");
-  actions.style.cssText = "display: flex; gap: 8px; border-top: 1px solid #ffffff0f; padding-top: 10px; flex-wrap: wrap;";
+  actions.style.cssText = "display: flex; gap: 8px; border-top: 1px solid var(--hairline); padding-top: 10px; flex-wrap: wrap;";
 
   const addBtn = document.createElement("button");
   addBtn.textContent = "+ Add Folder";
@@ -1893,8 +1906,8 @@ function showFolderManager() {
 
   const scanBtn = document.createElement("button");
   scanBtn.textContent = "🔍 Scan Drive";
-  scanBtn.style.cssText = `flex: 1; background: transparent; color: #6b6b80;
-    border: 1px solid #ffffff0f; border-radius: 8px;
+  scanBtn.style.cssText = `flex: 1; background: transparent; color: var(--muted);
+    border: 1px solid var(--hairline); border-radius: 8px;
     padding: 7px; font-family: inherit; font-size: 12px; cursor: pointer;`;
   scanBtn.onclick = () => { overlay.remove(); showDrivePicker(); };
 
@@ -1938,11 +1951,12 @@ document.addEventListener("keydown", (e) => {
     case "KeyC":       clearLoop(); break;
     case "KeyM":       toggleMute(); break;
     case "KeyF":       toggleFavorite(); break;
+    case "KeyT":       if (!e.ctrlKey && !e.metaKey && !e.altKey) toggleColorMode(); break;
   }
 });
 
 // ── INIT ─────────────────────────────────────────────────────
-window.onload = () => { reloadLibrary(); restoreLastPlayed(); };
+window.onload = () => { applyColorMode(document.documentElement.dataset.theme || "dark"); reloadLibrary(); restoreLastPlayed(); };
 
 // ── EXPORTS ──────────────────────────────────────────────────
 window.prev                   = prev;

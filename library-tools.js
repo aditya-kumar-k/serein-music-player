@@ -13,7 +13,7 @@ const dataPath      = name => path.join(__dirname, name);
 // ═════════════════════════════════════════════════════════════
 const BACKUP_APP = "serien-music-player-backup";
 const SETTINGS_KEYS = ["queue", "lastPlayed", "langFilter", "shuffleOn", "fadeOn",
-                       "sidebarCollapsed", "lyricsCollapsed", "accent", "dupIgnored", "eq", "eqPresets", "vizMode"];
+                       "sidebarCollapsed", "lyricsCollapsed", "accent", "theme", "dupIgnored", "eq", "eqPresets", "vizMode"];
 
 function buildBackup() {
   const settings = {};

@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>Serien Music Player</title>
+  <script>try { document.documentElement.dataset.theme = localStorage.getItem('theme') === 'light' ? 'light' : 'dark'; } catch { document.documentElement.dataset.theme = 'dark'; }</script>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -112,6 +113,10 @@
 
     <!-- Theme -->
     <div class="theme-row">
+      <button class="mode-btn" id="modeBtn" onclick="toggleColorMode()" title="Switch to light mode (T)" aria-label="Toggle light / dark mode">
+        <svg class="ic-moon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+        <svg class="ic-sun" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.400 1.400M5.600 18.400 7 17M17 7l1.400-1.400"/></svg>
+      </button>
       <input type="color" value="#7c5cfc" onchange="changeTheme(this.value)" title="Change accent color">
     </div>
 

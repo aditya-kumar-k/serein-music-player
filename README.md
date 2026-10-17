@@ -62,7 +62,8 @@ When you start a song that has no saved lyrics, Serien looks them up in the back
 | **Duplicate finder** | Finds identical files across folders using SHA-1 content hashes |
 | **Backup & restore** | Export or import playlists, favorites, history and lyrics as one JSON file, with path remapping when your music lives somewhere else |
 | **Linux integration** | Hardware media keys, plus MPRIS (sound menu, lock screen) through the Media Session API |
-| **Theming** | Pick any accent color |
+| **Light & dark mode** | One-click switch (sun/moon button, bottom right, or **T**), remembered between launches |
+| **Accent color** | Pick any accent color with the dot in the bottom-right corner |
 
 ### 🎛️ Equalizer
 
@@ -75,6 +76,12 @@ A 5-band graphic EQ (80 Hz, 250 Hz, 1 kHz, 4 kHz, 10 kHz) with presets (Bass boo
 Real-time spectrum visualization in three styles: **Bars**, **Wave** and **Ring**. Press **V** to cycle through them.
 
 ![Radial ring visualizer around the album art](docs/screenshots/visualizer-ring.png)
+
+### 🌗 Light & dark mode
+
+Switch themes with the sun/moon button or **T**. Your choice is remembered, and works together with the accent color picker.
+
+![Light mode](docs/screenshots/light-mode.png)
 
 ### 🪟 Mini-player
 
@@ -97,6 +104,7 @@ Collapse into a small always-on-top window with the cover, progress and transpor
 | **F** | Toggle favorite |
 | **A / B / C** | Set loop start / set loop end / clear loop |
 | **Ctrl + S** | Toggle shuffle |
+| **T** | Switch light / dark mode |
 | **V** | Cycle visualizer (Off → Bars → Wave → Ring) |
 | **L** | Full-screen lyrics (**Esc** to close) |
 | **Ctrl + L** | Show / hide the lyrics panel |
