@@ -959,3 +959,6 @@ body.mini .mini-toggle { left: auto; right: 10px; top: 8px; bottom: auto; }
 .eq-slider::-webkit-slider-thumb { appearance: none; width: 14px; height: 14px; margin-top: -5.5px; border-radius: 50%; background: var(--text); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 30%, transparent); }
 .eq-slider:hover::-webkit-slider-thumb { background: var(--text); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 40%, transparent); }
 .eq-foot { display: flex; justify-content: center; }
+.eq-bass { display: flex; align-items: center; gap: 10px; padding: 10px 4px 4px; font-size: 12px; color: var(--muted); }
+.eq-bass input { flex: 1; min-width: 0; }
+.eq-bass span:last-child { width: 38px; text-align: right; }

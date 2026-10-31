@@ -23,16 +23,18 @@ const EQ_PRESETS = {
 };
 
 // ── state (persisted) ────────────────────────────────────────
-let eqOn = true, eqGains = [0, 0, 0, 0, 0], eqCustom = {};
+let eqOn = true, eqGains = [0, 0, 0, 0, 0], eqCustom = {}, eqBass = 0;   // eqBass: 0–100 %, a separate bass-boost stage
 try {
   const s = JSON.parse(localStorage.getItem("eq"));
-  if (s) { eqOn = s.on !== false; if (Array.isArray(s.gains) && s.gains.length === 5) eqGains = s.gains.map(Number); }
+  if (s) { eqOn = s.on !== false; if (Array.isArray(s.gains) && s.gains.length === 5) eqGains = s.gains.map(Number); eqBass = Math.max(0, Math.min(100, Number(s.bass) || 0)); }
   eqCustom = JSON.parse(localStorage.getItem("eqPresets")) || {};
 } catch {}
 function eqSave() {
-  try { localStorage.setItem("eq", JSON.stringify({ on: eqOn, gains: eqGains })); localStorage.setItem("eqPresets", JSON.stringify(eqCustom)); } catch {}
+  try { localStorage.setItem("eq", JSON.stringify({ on: eqOn, gains: eqGains, bass: eqBass })); localStorage.setItem("eqPresets", JSON.stringify(eqCustom)); } catch {}
 }
-const eqActive = () => eqOn && eqGains.some(g => g !== 0);
+const eqActive = () => eqOn && (eqGains.some(g => g !== 0) || eqBass > 0);
+const EQ_BASS_MAX_DB = 10;
+const eqBassDb = () => eqBass / 100 * EQ_BASS_MAX_DB;
 
 // ── shared audio context + helpers (the visualizer uses these too) ──
 let sharedCtx = null;
@@ -56,6 +58,9 @@ function eqBuild() {
     f.type = b.type; f.frequency.value = b.f; f.Q.value = 0.9; f.gain.value = 0;
     return f;
   });
+  const bass = ctx.createBiquadFilter();               // bass boost: wide low shelf plus a little punch
+  bass.type = "lowshelf"; bass.frequency.value = 110; bass.gain.value = 0;
+  filters.push(bass);
   const limiter = ctx.createDynamicsCompressor();      // catches peaks so boosts don't crackle
   limiter.threshold.value = -2; limiter.knee.value = 0; limiter.ratio.value = 20;
   limiter.attack.value = 0.003; limiter.release.value = 0.12;
@@ -71,12 +76,13 @@ function eqBuild() {
 }
 
 // Headroom: cut the overall level a little when boosting so the boosted bands don't clip
-const eqHeadroomDb = () => Math.max(0, ...eqGains) * 0.6;
+const eqHeadroomDb = () => Math.max(0, ...eqGains, eqBassDb()) * 0.6;
 
 function eqApply() {
   if (!eqNodes) return;
   const t = sharedAudio().currentTime;
   eqGains.forEach((g, i) => eqNodes.filters[i].gain.setTargetAtTime(g, t, 0.02));
+  eqNodes.filters[EQ_BANDS.length].gain.setTargetAtTime(eqBassDb(), t, 0.02);
   eqNodes.pre.gain.setTargetAtTime(Math.pow(10, -eqHeadroomDb() / 20), t, 0.02);
 }
 
@@ -111,6 +117,7 @@ function eqSetGain(i, v) {
   eqChanged();
 }
 function eqSetAll(arr) { eqGains = arr.slice(); eqChanged(); }
+function eqSetBass(v) { eqBass = Math.max(0, Math.min(100, Math.round(v))); eqChanged(); }
 function eqToggle(on) { eqOn = on; eqChanged(); }
 function eqChanged() {
   eqSave();
@@ -156,13 +163,21 @@ function showEqPanel(anchor) {
           <div class="eq-freq">${b.label}</div>
         </div>`).join("")}
     </div>
+    <div class="eq-bass">
+      <span>Bass boost</span>
+      <input type="range" id="eqBass" min="0" max="100" step="5" value="0" title="Double-click to reset">
+      <span id="eqBassVal">0%</span>
+    </div>
     <div class="eq-foot"><button class="eq-link" id="eqReset">Reset to flat</button></div>`;
   document.body.appendChild(p);
   eqPanel = p;
 
   p.querySelector("#eqOnBox").onchange = e => eqToggle(e.target.checked);
   p.querySelector("#eqPreset").onchange = e => { const g = eqAllPresets()[e.target.value]; if (g) eqSetAll(g); };
-  p.querySelector("#eqReset").onclick = () => eqSetAll([0, 0, 0, 0, 0]);
+  p.querySelector("#eqReset").onclick = () => { eqBass = 0; eqSetAll([0, 0, 0, 0, 0]); };
+  const bassEl = p.querySelector("#eqBass");
+  bassEl.oninput = () => eqSetBass(parseFloat(bassEl.value));
+  bassEl.ondblclick = () => eqSetBass(0);
   EQ_BANDS.forEach((_, i) => {
     const s = p.querySelector("#eqS" + i);
     s.oninput = () => eqSetGain(i, parseFloat(s.value));
@@ -180,10 +195,11 @@ function showEqPanel(anchor) {
     if (name && eqCustom[name] && window.confirm(`Delete the preset "${name}"?`)) { delete eqCustom[name]; eqSave(); eqRefreshPanel(); }
   };
 
-  // position above the button, kept on screen
+  // position next to the button, kept on screen: below it if it sits in the top half, above otherwise
   const r = anchor.getBoundingClientRect();
   p.style.left = Math.max(8, Math.min(r.left + r.width / 2 - p.offsetWidth / 2, window.innerWidth - p.offsetWidth - 8)) + "px";
-  p.style.bottom = (window.innerHeight - r.top + 8) + "px";
+  if (r.top < window.innerHeight / 2) p.style.top = (r.bottom + 8) + "px";
+  else p.style.bottom = (window.innerHeight - r.top + 8) + "px";
   eqRefreshPanel();
 
   setTimeout(() => {
@@ -211,6 +227,9 @@ function eqRefreshPanel() {
     if (parseFloat(s.value) !== g) s.value = g;
     eqPanel.querySelector("#eqDb" + i).textContent = (g > 0 ? "+" : "") + g;
   });
+  const bs = eqPanel.querySelector("#eqBass");
+  if (parseFloat(bs.value) !== eqBass) bs.value = eqBass;
+  eqPanel.querySelector("#eqBassVal").textContent = eqBass + "%";
   const sel = eqPanel.querySelector("#eqPreset"), cur = eqCurrentPresetName();
   const opt = (n, label) => `<option value="${n.replace(/"/g, "&quot;")}"${n === cur ? " selected" : ""}>${label || n}</option>`;
   sel.innerHTML = (cur ? "" : `<option selected disabled>Custom</option>`)
