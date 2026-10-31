@@ -15,7 +15,6 @@ const filesToCopy = [
   'renderer.js',
   'extras.js',
   'library-tools.js',
-  'eq.js',
   'ringtone.js',
   'translit.js',
   'platform-adapter.js',
@@ -25,7 +24,7 @@ const filesToCopy = [
 ];
 
 // Files shared with the Linux app live one level up in the repo root.
-const sharedFiles = ['visualizer.js'];
+const sharedFiles = ['visualizer.js', 'eq.js'];
 const sharedDir = path.join(__dirname, '..');
 
 console.log('Copying web assets to www/ ...');
