@@ -174,6 +174,10 @@ This creates `~/.local/share/applications/serien-music-player.desktop` pointing 
 
 The Android app lives in [`android/`](android/). It is a [Capacitor](https://capacitorjs.com) port of the player with MediaStore library scanning, background playback, a home-screen widget and a touch UI. Package id: `com.sereinmusicplayer.app`.
 
+**Android extras:**
+- ✂️ **Ringtone maker:** open it from the scissors button on the player. Drag the two handles on the waveform to pick up to 3 minutes of a song (30 s by default), nudge the start and end in 0.1 s steps, and preview the selection. Optionally add a 2 s fade in or out, then save it as a **ringtone, notification or alarm** (AAC `.m4a`) and set it as your phone's sound in one tap. It works on songs from your phone's music library.
+- 📱 Library scanned from the phone's MediaStore, background playback with lock-screen and Bluetooth controls, a home-screen widget, and swipe gestures on the player.
+
 **Download:** [serein-music-player.apk](https://github.com/aditya-kumar-k/serein-music-player/releases/latest/download/serein-music-player.apk) (latest release; see all versions on the [Releases page](https://github.com/aditya-kumar-k/serein-music-player/releases)). Open the file on your phone and allow "Install unknown apps" for your browser or file manager when asked.
 
 **Build a release APK** (needs JDK 21 and the Android SDK with API 36):
