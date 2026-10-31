@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Serein Music Player
+Comment=Local music player
+Exec=/mnt/D48433EE8433D1AA/Software/Linux/music-player/launch.sh
+Path=/mnt/D48433EE8433D1AA/Software/Linux/music-player
+Icon=/mnt/D48433EE8433D1AA/Software/Linux/music-player/icon.png
+Terminal=false
+Categories=AudioVideo;Audio;Player;
+StartupWMClass=music-player

@@ -1,0 +1,21 @@
+node_modules/
+www/
+*.apk
+*.idsig
+signing/
+*.jks
+keystore.properties
+local.properties
+android/build/
+android/app/build/
+android/.gradle/
+android/.idea/
+android/app/src/main/assets/public/
+android/app/src/main/assets/capacitor*.json
+android/capacitor-cordova-android-plugins/
+# personal library data
+favorites.json
+folders.json
+history.json
+lyrics.json
+playlists.json
