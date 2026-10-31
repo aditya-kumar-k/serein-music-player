@@ -17,7 +17,6 @@ const filesToCopy = [
   'library-tools.js',
   'eq.js',
   'ringtone.js',
-  'visualizer.js',
   'translit.js',
   'platform-adapter.js',
   'mobile-ui.js',
@@ -25,7 +24,17 @@ const filesToCopy = [
   'icon.svg'
 ];
 
+// Files shared with the Linux app live one level up in the repo root.
+const sharedFiles = ['visualizer.js'];
+const sharedDir = path.join(__dirname, '..');
+
 console.log('Copying web assets to www/ ...');
+for (const file of sharedFiles) {
+  const src = path.join(sharedDir, file);
+  if (!fs.existsSync(src)) { console.error(`  ✗ Missing shared file: ../${file}`); process.exit(1); }
+  fs.copyFileSync(src, path.join(destDir, file));
+  console.log(`  ✓ ../${file} (shared)`);
+}
 for (const file of filesToCopy) {
   const src = path.join(srcDir, file);
   const dest = path.join(destDir, file);
