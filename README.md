@@ -165,9 +165,26 @@ This creates `~/.local/share/applications/serien-music-player.desktop` pointing 
 ├── launch.sh            # Launcher script
 ├── install.sh           # Installs the launcher entry
 ├── music-player.desktop.in # Desktop entry template used by install.sh
+├── android/             # Android app (Capacitor)
 ├── docs/screenshots/    # Images used in this README
 └── *.example.json       # Sample data files (your real ones are git-ignored)
 ```
+
+## 📱 Android
+
+The Android app lives in [`android/`](android/). It is a [Capacitor](https://capacitorjs.com) port of the player with MediaStore library scanning, background playback, a home-screen widget and a touch UI. Package id: `com.sereinmusicplayer.app`.
+
+**Build a release APK** (needs JDK 21 and the Android SDK with API 36):
+
+```bash
+cd android
+npm install
+npm run build:mobile                 # copy web files and sync Capacitor
+echo "sdk.dir=$HOME/Android/Sdk" > android/local.properties
+cd android && JAVA_HOME=/path/to/jdk21 ./gradlew assembleRelease
+```
+
+The APK is written to `android/android/app/build/outputs/apk/release/`. Release signing reads `android/android/keystore.properties` (`storeFile`, `storePassword`, `keyAlias`, `keyPassword`). Keystores, passwords and APKs are git-ignored, so never commit them. `npm run build:apk` re-signs with `SEREIN_KS_PASS` set.
 
 ## 🧰 Built with
 
