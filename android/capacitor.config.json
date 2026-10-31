@@ -1,0 +1,11 @@
+{
+  "appId": "com.sereinmusicplayer.app",
+  "appName": "Serein Music Player",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "captureInput": true
+  }
+}
